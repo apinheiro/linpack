@@ -101,8 +101,10 @@ int main(void)
         printf("    Reps Time(s) DGEFA   DGESL  OVERHEAD    KFLOPS\n");
         printf("----------------------------------------------------\n");
         nreps=1;
-        while (linpack(nreps,arsize)<10.)
+        while (linpack(nreps,arsize)<1000.){
             nreps*=2;
+            if (nreps > 262144) break;
+        }
         free(mempool);
         printf("\n");
 }
@@ -147,8 +149,8 @@ static REAL linpack(long nreps,int arsize)
         tdgesl += second()-t1;
         }
     totalt=second()-totalt;
-    if (totalt<0.5 || tdgefa+tdgesl<0.2)
-        return(0.);
+    //if (totalt<0.5 || tdgefa+tdgesl<0.2)
+    //    return(0.);
     kflops=2.*nreps*ops/(1000.*(tdgefa+tdgesl));
     toverhead=totalt-tdgefa-tdgesl;
     if (tdgefa<0.)
@@ -157,7 +159,7 @@ static REAL linpack(long nreps,int arsize)
         tdgesl=0.;
     if (toverhead<0.)
         toverhead=0.;
-    printf("%8ld %6.2f %6.2f%% %6.2f%% %6.2f%%  %9.3f\n",
+    printf("%8ld %6.4f %6.4f%% %6.4f%% %6.4f%%  %9.4f\n",
             nreps,totalt,100.*tdgefa/totalt,
             100.*tdgesl/totalt,100.*toverhead/totalt,
             kflops);

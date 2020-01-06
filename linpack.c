@@ -101,9 +101,9 @@ int main(void)
         printf("    Reps Time(s) DGEFA   DGESL  OVERHEAD    KFLOPS\n");
         printf("----------------------------------------------------\n");
         nreps=1;
-        while (linpack(nreps,arsize)<1000.){
+        while (linpack(nreps,arsize)<10.){
             nreps*=2;
-            if (nreps > 262144) break;
+            //if (nreps > 262144) break;
         }
         free(mempool);
         printf("\n");
